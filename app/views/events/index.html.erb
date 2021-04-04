@@ -1,8 +1,6 @@
 <h1>イベント一覧</h1>
 <%= link_to "企画する", new_event_path, class:"post" %>
 
-
-
 <div class="contents">
   <% @events.each do |event| %>
     <div class="content_event">
@@ -30,7 +28,7 @@
           <% @userevents.each do |userevent| %>
              <% if userevent.event_id == event.id %>
                <%= userevent.user.nickname %>
-             
+
              <% end %>
           <% end %>
 
