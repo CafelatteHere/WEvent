@@ -1,58 +1,17 @@
-<h1>イベント一覧</h1>
-<%= link_to "企画する", new_event_path, class:"post" %>
+<div class="container-fluid my-3">
+  <h2>イベント一覧</h2>
+  <%= link_to "企画する", new_event_path, class:"btn btn-primary" %>
+</div>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
-</nav>
-<button type="button" class="btn btn-primary">Primary</button>
-
-<div class="contents">
+<div class="container-fluid">
   <% @events.each do |event| %>
-    <div class="content_event">
+    <div class="card my-3 bg-light my-3" style="width:25rem;">
+  <div class="card-body">
+        <h4 class="card-title"><%= event.name%></h4>
+        <h6 class="card-subtitle mb-2 text-muted"><%= event.description %></h6>
 
     <table class="event-table">
       <tbody>
-        <tr>
-          <th class="detail-item">ID</th>
-          <td class="detail-value"><%= event.id%></td>
-        </tr>
-        <tr>
-          <th class="detail-item">イベント名</th>
-          <td class="detail-value"><%= event.name%></td>
-        </tr>
         <tr>
           <th class="detail-item">場所</th>
           <td class="detail-value"><%= event.location %></td>
@@ -67,69 +26,48 @@
         </tr>
         <tr>
           <th class="detail-item">説明</th>
-          <td class="detail-value"><%= event.description %></td>
+          <td class="detail-value"></td>
         </tr>
 
-        <% @userevents.each do |userevent| %>
-        <% if userevent.event_id == event.id %>
+        <tr>
+          <th>Chat rooms</th>
+          <td><%= link_to 'チャットルームへ', rooms_path(event) , class:"btn btn-primary btn-sm mx-1" %></td>
+        </tr>
+
         <tr>
           <th class="detail-item">開催者</th>
-          <td class="detail-value"><%= userevent.user.nickname %></td>
+          <td class="detail-value">
+          <% @userevents.each do |userevent| %>
+            <% if userevent.event_id == event.id %>
+              <%= userevent.user.nickname %>
+            <% end %>
+          <% end %>
+          </td>
         </tr>
 
-          <% end %>
-
-      <p><%= event.name %></p>
-
-        <span class="event_location">
-          <%= event.id %>
-        </span>
-
-
-        <span class="event_location">
-          <%= event.location %>
-        </span>
-        <span class="event_genre">
-          <%= event.genre_id %>
-        </span>
-        <span class="event_date">
-          <%= event.date %>
-        </span>
-        <span class="event_description">
-          <%= event.description %>
-        </span>
-
-        <%= link_to 'タスク作成', new_event_task_path(event) %> <%= link_to 'チャットルームへ', rooms_path(event) %>
+        <tr>
+          <th class="detail-item">New task and all tasks</th>
+          <td>
+          <%# タスク作成とタスク一覧 %>
+          <% if user_signed_in? %>
+              <% @userevents.each do |userevent| %>
+                <% if userevent.event_id == event.id && userevent.user_id == current_user.id %>
+                  <%= link_to 'タスク作成', new_event_task_path(event), class:"btn btn-primary btn-sm mx-1" %>
+                  <% if event.tasks.length > 0 %>
+                    <%= link_to 'タスク一覧', event_tasks_path(event), class:"btn btn-primary btn-sm mx-1" %>
+                  <% end %>
+              <% end %>
+              <% end %>
 
 
-
-          <% @userevents.each do |userevent| %>
-             <% if userevent.event_id == event.id %>
-               <%= userevent.user.nickname %>
-
-             <% end %>
-
-          <% end %>
-
+          </td>
+        </tr>
       </tbody>
     </table>
-
-
-  <%# タスク作成とタスク一覧 %>
-    <% if user_signed_in? %>
-      <% @userevents.each do |userevent| %>
-        <% if userevent.event_id == event.id && userevent.user_id == current_user.id %>
-          <%= link_to 'タスク作成', new_event_task_path(event) %>
-          <% if event.tasks.length > 0 %>
-            <%= link_to 'タスク一覧', event_tasks_path(event) %>
-          <% end %>
-
-        <% end %>
       <% end %>
-    <% end %>
 
-    </div>
-  <% end %>
+  </div>
+
 </div>
-<% end %>
+ <% end %>
 
