@@ -1,7 +1,6 @@
 <div class="container-fluid  w-100">
 <div class=" d-flex justify-content-center w-100">
   <div class="mb-3 mt-4 w-75">
-    <%= form_with(model: @event, local:true) do |form| %>
     <%= render 'shared/error_messages', model: @task, class:"col-sm-8 d-flex flex-column align-items-center w-100" %>
       <div class="mb-3 ">
         <label  class="form-label align-items-center">課題名</label>
@@ -20,13 +19,12 @@
       <div class="pt-2 mb-3 dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">タスク担当を選択してください</button>
         <%# <label for="user_id", class=" ">タスク担当を選択してください</label> %>
-        <ul class="dropdown-menu pe-4" aria-labelledby="dropdownMenuButton1">
-          <ul name="user_ids[]" multiple>
+        <ul class="dropdown-menu pb-0" aria-labelledby="dropdownMenuButton1">
+          <ul><select name="user_ids[]" multiple class="border-0 w-100 pb-0">
             <% @event.users.all.each do |user| %>
-            <li class="dropdown-item align-items-center w-100", value= <%= user.id %>><%= user.nickname %></li>
-            <li><hr class="dropdown-divider"></li>
+            <li><option class="dropdown-item align-items-center w-100 py-3 pb-0", value= <%= user.id %>><%= user.nickname %></option></li>
           <% end %>
-          </ul>
+          </select></ul>
         </ul>
       </div>
 
@@ -45,7 +43,6 @@
         </div>
       <div class="mb-3 d-flex justify-content-center">
       <%= form.submit "送信", class:"btn btn-primary btn-lg mt-4" %>
-    <% end %>
   </div>
 </div>
 </div>
