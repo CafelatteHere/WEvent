@@ -4,7 +4,7 @@
     <h3 class="text-center">投稿する</h3>
     <%= form_with(model: @event, local:true) do |form| %>
       <div class="mb-3 ">
-        <label  class="form-label align-items-center align-items-center">イベント名</label>
+        <label  class="form-label align-items-center">イベント名</label>
         <div class="col-sm-8 d-flex flex-column align-items-center w-100">
           <%= form.text_field        :name,        placeholder: "キャンプなど", class:"form-control" %>
         </div>
